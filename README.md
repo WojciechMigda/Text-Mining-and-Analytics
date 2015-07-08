@@ -64,4 +64,22 @@ gave this:
 ```
 [('This', 'DT'), ('course', 'NN'), ('will', 'MD'), ('cover', 'VB'), ('the', 'DT'), ('major', 'JJ'), ('techniques', 'NNS'), ('for', 'IN'), ('mining', 'VBG'), ('and', 'CC'), ('analyzing', 'VBG'), ('text', 'NN'), ('data', 'NNS'), ('to', 'TO'), ('discover', 'VB'), ('interesting', 'JJ'), ('patterns,', 'NN'), ('extract', 'NN'), ('useful', 'NN'), ('knowledge,', 'NN'), ('and', 'CC'), ('support', 'NN'), ('decision', 'NN'), ('making,', 'NN'), ('with', 'IN'), ('an', 'DT'), ('emphasis', 'NN'), ('on', 'IN'), ('statistical', 'JJ'), ('approaches', 'NNS'), ('that', 'WDT'), ('can', 'MD'), ('be', 'VB'), ('generally', 'RB'), ('applied', 'VBN'), ('to', 'TO'), ('arbitrary', 'JJ'), ('text', 'NN'), ('data', 'NNS'), ('in', 'IN'), ('any', 'DT'), ('natural', 'JJ'), ('language', 'NN'), ('with', 'IN'), ('no', 'DT'), ('or', 'CC'), ('minimum', 'JJ'), ('human', 'NN'), ('effort.', 'NNP'), ('Detailed', 'NNP'), ('analysis', 'NN'), ('of', 'IN'), ('text', 'NN'), ('data', 'NNS'), ('requires', 'VBZ'), ('understanding', 'VBG'), ('of', 'IN'), ('natural', 'JJ'), ('language', 'NN'), ('text,', 'NN'), ('which', 'WDT'), ('is', 'VBZ'), ('known', 'VBN'), ('to', 'TO'), ('be', 'VB'), ('a', 'DT'), ('difficult', 'JJ'), ('task', 'NN'), ('for', 'IN'), ('computers.', 'NNP'), ('However,', 'NNP'), ('a', 'DT'), ('number', 'NN'), ('of', 'IN'), ('statistical', 'JJ'), ('approaches', 'NNS'), ('have', 'VBP'), ('been', 'VBN'), ('shown', 'VBN'), ('to', 'TO'), ('work', 'VB'), ('well', 'RB'), ('for', 'IN'), ('the', 'DT'), ('"shallow"', 'NN'), ('but', 'CC'), ('robust', 'RB'), ('analysis', 'VBZ'), ('of', 'IN'), ('text', 'NN'), ('data', 'NNS'), ('for', 'IN'), ('pattern', 'NN'), ('finding', 'VBG'), ('and', 'CC'), ('knowledge', 'NN'), ('discovery.', 'NNP'), ('You', 'NNP'), ('will', 'MD'), ('learn', 'VB'), ('the', 'DT'), ('basic', 'JJ'), ('concepts,', 'NN'), ('principles,', 'NN'), ('and', 'CC'), ('major', 'JJ'), ('algorithms', 'NNS'), ('in', 'IN'), ('text', 'NN'), ('mining', 'NN'), ('and', 'CC'), ('their', 'PRP$'), ('potential', 'JJ'), ('applications.', 'NNP')]
 ```
-This is for starters - we applid POS to the text just tokenized over whitespace. We would like to preprocess is slightly.
+This is for starters - we applied POS to the text just tokenized by whitespace. We maybe would like to preprocess is a bit differently.
+
+### Sentence tokenize
+First, you need to dowload the punkt tokenizer with `nltk.download()` (models->punkt).
+Then, the text can be broken into sentences with:
+```
+from nltk import sent_tokenize
+sentences = sent_tokenize(text)
+```
+
+### ICU tokenize
+TODO
+
+### PTB tokenize
+Penn Treebank tokenizer is provided by `nltk`. We can do invoke it like this:
+```
+from nltk.tokenize import TreebankWordTokenizer
+TreebankWordTokenizer().tokenize(sentence)
+```
