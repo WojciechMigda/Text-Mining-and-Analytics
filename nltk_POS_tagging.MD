@@ -67,7 +67,7 @@ gave this:
 This is for starters - we applied POS to the text just tokenized by whitespace. We maybe would like to preprocess is a bit differently.
 
 ### Sentence tokenize
-First, you need to dowload the punkt tokenizer with `nltk.download()` (models->punkt).
+First, you need to dowload the `punkt` tokenizer with `nltk.download()` (`models->punkt`).
 Then, the text can be broken into sentences with:
 ```
 from nltk import sent_tokenize
@@ -78,7 +78,7 @@ sentences = sent_tokenize(text)
 TODO
 
 ### PTB tokenize
-Penn Treebank tokenizer is provided by `nltk`. We can do invoke it like this:
+Penn Treebank tokenizer is provided by `nltk`. We can invoke it like this:
 ```
 from nltk.tokenize import TreebankWordTokenizer
 TreebankWordTokenizer().tokenize(sentence)
