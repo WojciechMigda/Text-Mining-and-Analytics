@@ -1,2 +1,2 @@
-### [POS tagging](nltk_POS_tagging.MD)
-### [word associations](syntagma.MD)
+### [POS tagging](nltk_POS_tagging.md)
+### [word associations](syntagma.md)
