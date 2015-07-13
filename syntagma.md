@@ -78,7 +78,7 @@ X = vect.fit_transform(text)
 ```
 `X` is now a sparse [`csr_matrix`](http://docs.scipy.org/doc/scipy-0.15.1/reference/generated/scipy.sparse.csr_matrix.html)
 where columns correspond to words and rows to documents,
-which holds corresponding word counts.
+which holds corresponding word counts. To speed up the processing we can skip words which do not exceed certain occurence threshold; this is controlled with the `min_df` parameter of `CountVectorizer`.
 We can have a peek at the matrix contents and the word/column mappings:
 ```python
 feature_names = vect.get_feature_names()
