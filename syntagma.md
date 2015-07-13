@@ -57,7 +57,8 @@ text = [[token for token in sent if len(token) >= 2 and len(token) <= 35] for se
 Now, it's time to get rid of all stopwords. Conveniently, `nltk` itself provides such:
 ```python
 from nltk.corpus import stopwords
-text = [[token for token in sent if not token in set(stopwords.words('english'))] for sent in text]
+stopwords = set(stopwords.words('english'))
+text = [[token for token in sent if not token in stopwords] for sent in text]
 ```
 
 Finally, we will apply Porter2 stemmer:
