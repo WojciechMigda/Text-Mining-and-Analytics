@@ -80,16 +80,14 @@ where columns correspond to words and rows to documents,
 which holds corresponding word counts.
 We can have a peek at the matrix contents and the word/column mappings:
 ```python
-print X.toarray()
 feature_names = vect.get_feature_names()
+print X.toarray()
 print feature_names
 ```
 
-We will store the document-per-word and document-per-bigram counts in `FreqDist` provided by `nltk`
+We will store the document-per-word and document-per-bigram counts in python's `Counter`
 ```python
-from nltk.probability import FreqDist
-wfd = FreqDist()
-bfd = FreqDist()
+from collections import Counter
 ```
 
 Retrieving of document-per-word counts is simple with
@@ -97,25 +95,19 @@ Retrieving of document-per-word counts is simple with
 method of the csr matrix:
 ```python
 from itertools import izip
-for index, count in izip(range(X.shape[1]), X.getnnz(0)):
-    wfd[index] = count
+wfd = Counter({key: value for (key, value) in izip(range(X.shape[1]), X.getnnz(0))})
 ```
 
 document-per-bigram counts are only slightly more difficult to collect:
 ```python
-from itertools import combinations
-for segment in X:
-    for w1, w2 in combinations(segment.tocoo().col, 2):
-        bfd[w1, w2] += 1
+from itertools import combinations, chain
+bfd = Counter(chain.from_iterable([combinations(sorted(segment.tocoo().col), 2) for segment in X]))
 ```
-I've used a `tocoo` trick described [here](http://stackoverflow.com/a/4319087/2003487) but I haven't made any
-measurements for this case myself.
 
 The mutual information scoring function (with smoothing) looks like this:
 ```python
 import math
-def mutinf(Nab, (Na, Nb), N):
-    log2 = lambda x: math.log(x, 2)
+def mutinf(Nab, Na, Nb, N):
     PXa1 = (Na + 0.5) / (N + 1)
     PXb1 = (Nb + 0.5) / (N + 1)
     PXa0 = 1. - PXa1
@@ -126,19 +118,19 @@ def mutinf(Nab, (Na, Nb), N):
     PXab10 = PXa1 - PXab11
     PXab00 = PXa0 - PXab01
     return \
-        PXab00 * log2(PXab00 / (PXa0 * PXb0)) + \
-        PXab01 * log2(PXab01 / (PXa0 * PXb1)) + \
-        PXab10 * log2(PXab10 / (PXa1 * PXb0)) + \
-        PXab11 * log2(PXab11 / (PXa1 * PXb1))
+        PXab00 * math.log(PXab00 / (PXa0 * PXb0), 2) + \
+        PXab01 * math.log(PXab01 / (PXa0 * PXb1), 2) + \
+        PXab10 * math.log(PXab10 / (PXa1 * PXb0), 2) + \
+        PXab11 * math.log(PXab11 / (PXa1 * PXb1), 2)
 ```
 
 Scores will be calculated by iterating the `bfd` counts:
 ```python
 N_seg = len(text)
-scores = [(tup, mutinf(bfd[tup], (wfd[tup[0]], wfd[tup[1]]), N_seg)) for tup in bfd]
+scores = [(mutinf(bfd[tup], wfd[tup[0]], wfd[tup[1]], N_seg), tup) for tup in bfd]
 ```
 
 Finally, we can print the top-20
 ```python
-print [(tup[1], feature_names[tup[0][0]], feature_names[tup[0][1]]) for tup in sorted(scores, key=lambda t: (-t[1], t[0]))[:20]]
+print [(tup[0], feature_names[tup[1][0]], feature_names[tup[1][1]]) for tup in sorted(scores, reverse=True)[:20]]
 ```
