@@ -47,7 +47,8 @@ def main():
     text = [unescape(sent) for sent in text]
 
     from nltk.tokenize.regexp import WhitespaceTokenizer
-    text = [WhitespaceTokenizer().tokenize(sent) for sent in text if len(sent) > 0]
+    ws_tokenizer = WhitespaceTokenizer()
+    text = [ws_tokenizer.tokenize(sent) for sent in text if len(sent) > 0]
 
     text = [[token.lower() for token in sent] for sent in text]
 
